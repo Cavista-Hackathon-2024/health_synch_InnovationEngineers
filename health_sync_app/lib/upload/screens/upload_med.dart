@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_sync_app/authentication/auth_provider.dart';
 import 'package:health_sync_app/colors.dart';
+import 'package:health_sync_app/dashboard/dashboard_provider.dart';
 import 'package:health_sync_app/upload/upload_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -144,9 +145,7 @@ class _UploadMedState extends State<UploadMed> {
                     if (_nameController.text.isNotEmpty &&
                         _healthAuthority.text.isNotEmpty) {
                       final now = DateTime.now();
-                      final formattedTime =
-                          TimeOfDay(hour: now.hour, minute: now.minute)
-                              .format(context);
+                      final formattedTime = formatDateDdMmYy(now);
 
                       String? response = await Provider.of<UploadProvider>(
                               context,

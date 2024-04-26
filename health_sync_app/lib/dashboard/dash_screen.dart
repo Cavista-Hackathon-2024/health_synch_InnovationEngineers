@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_sync_app/authentication/auth_models.dart';
 import 'package:health_sync_app/authentication/auth_provider.dart';
 import 'package:health_sync_app/colors.dart';
+import 'package:health_sync_app/dashboard/dashboard_provider.dart';
 import 'package:provider/provider.dart';
 
 class DashScreen extends StatefulWidget {
@@ -139,17 +140,17 @@ class TabView extends StatelessWidget {
         appBar: AppBar(
           bottom: const TabBar(
             tabs: [
-              Tab(text: "Conditions"),
               Tab(text: "Medications"),
               Tab(text: "Allergies"),
+              Tab(text: "Conditions"),
               Tab(text: "Vitals"),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
-            SizedBox(),
             MedTab(),
+            SizedBox(),
             SizedBox(),
             SizedBox(),
           ],
@@ -181,7 +182,10 @@ class MedTab extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Provider.of<DashProvider>(context, listen: false)
+                            .onTapItem(1);
+                      },
                       child: Container(
                         color: HealthColors.blue,
                         height: MediaQuery.sizeOf(context).height * 0.2,
@@ -211,11 +215,70 @@ class MedTab extends StatelessWidget {
                   ),
                 );
               } else {
-                // var documents = snapshot.data!.data();
-                return ListView.builder(
-                  itemBuilder: (context, index) => const SizedBox(),
-                  itemCount: 1,
-                );
+                List<MapEntry<String, dynamic>> documents = [];
+                documents = snapshot.data!.data()!.entries.toList();
+                return documents.length > 1
+                    ? ListView.builder(
+                        itemBuilder: (context, index) {
+                          var document = documents[index + 1].value;
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: HealthColors.blue,
+                              child: Text(
+                                "${index + 1}",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            title: Text(
+                              document["name"],
+                            ),
+                            subtitle: Text(
+                              document["instruction"],
+                            ),
+                            trailing: Text(document["date"]),
+                          );
+                        },
+                        itemCount: documents.length - 1,
+                      )
+                    : Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: GestureDetector(
+                            onTap: () {
+                              Provider.of<DashProvider>(context, listen: false)
+                                  .onTapItem(1);
+                            },
+                            child: Container(
+                              color: HealthColors.blue,
+                              height: MediaQuery.sizeOf(context).height * 0.2,
+                              width: MediaQuery.sizeOf(context).width * 0.6,
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.add_circle,
+                                    size: 50,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                  Text(
+                                    "Add new document",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
               }
             } else {
               return const Text("");
