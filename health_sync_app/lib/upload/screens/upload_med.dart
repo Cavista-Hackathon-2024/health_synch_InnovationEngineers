@@ -192,6 +192,7 @@ class _UploadMedState extends State<UploadMed> {
           ),
         ),
       ),
+      backgroundColor: HealthColors.blue2,
     );
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authentication;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -26,8 +29,16 @@ class AuthUtils {
 class SecureStorage {
   static String keyUId = "key UID";
   static String keyDob = "key dob";
+  static String keyUIds = "key uIds";
+
   static const FlutterSecureStorage secureStorage = FlutterSecureStorage();
   Future<void> storeGoogleUser(context) async {
+    final random = Random.secure();
+    const length = 6;
+    const chars =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    final string = String.fromCharCodes(List.generate(
+        length, (index) => chars.codeUnitAt(random.nextInt(chars.length))));
     try {
       authentication.UserCredential userCredential =
           await AuthUtils.signInWithGoogle();
@@ -37,11 +48,35 @@ class SecureStorage {
       String gmail = userCredential.user!.email!;
 
       db.collection("Users").doc(uId).set(
-            User(name: name, gmail: gmail, uId: uId).toJson(),
+            User(name: name, gmail: gmail, uId: uId, accessKey: "HS-$string")
+                .toJson(),
           );
     } catch (e) {
       throw '';
     }
+  }
+
+  static storeUId(String uId) async {
+    String? uIdList = await secureStorage.read(key: keyUIds);
+
+    if (uIdList != null) {
+      List oldList = jsonDecode(uIdList);
+      if (oldList.contains(uId) != true) {
+        oldList.add(uId);
+        String newList = jsonEncode(oldList);
+
+        secureStorage.write(key: keyUIds, value: newList);
+      }
+    } else {
+      List oldList = [];
+      oldList.add(uId);
+      String newList = jsonEncode(oldList);
+      await secureStorage.write(key: keyUIds, value: newList);
+    }
+  }
+
+  static Future<String?> getUIds() async {
+    return await secureStorage.read(key: keyUIds);
   }
 
   static Future<String?> getUid() async {

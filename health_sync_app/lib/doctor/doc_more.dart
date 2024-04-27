@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:health_sync_app/authentication/auth_models.dart';
 import 'package:health_sync_app/authentication/auth_provider.dart';
 import 'package:health_sync_app/colors.dart';
-import 'package:health_sync_app/doctor/doctor_main.dart';
-import 'package:health_sync_app/doctor/registration/doc_reg.dart';
+import 'package:health_sync_app/home_screen.dart';
 import 'package:provider/provider.dart';
 
-class MoreScreen extends StatefulWidget {
-  const MoreScreen({super.key});
+class DocMore extends StatefulWidget {
+  const DocMore({super.key});
 
   @override
-  State<MoreScreen> createState() => _MoreScreenState();
+  State<DocMore> createState() => _DocMoreState();
 }
 
-class _MoreScreenState extends State<MoreScreen> {
+class _DocMoreState extends State<DocMore> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -74,28 +73,6 @@ class _MoreScreenState extends State<MoreScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
-                ),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  tileColor: Colors.white,
-                  title: const Text(
-                    "See Health Care Providers",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const SizedBox(
                   height: 20,
                 ),
                 const Text(
@@ -129,11 +106,7 @@ class _MoreScreenState extends State<MoreScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => document != null
-                            ? document.isMedic == true
-                                ? const DoctorMainScreen()
-                                : const DocRegister()
-                            : const DocRegister(),
+                        builder: (context) => const HomeScreen(),
                       ),
                     );
                   },
@@ -141,7 +114,7 @@ class _MoreScreenState extends State<MoreScreen> {
                       borderRadius: BorderRadius.circular(15)),
                   tileColor: Colors.white,
                   title: const Text(
-                    "Medical Consultant",
+                    "Back to User",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,

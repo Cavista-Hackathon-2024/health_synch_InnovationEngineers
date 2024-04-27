@@ -4,7 +4,9 @@ import 'dart:typed_data';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:health_sync_app/colors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:markdown/markdown.dart';
 
 class GeminiPage extends StatefulWidget {
   const GeminiPage({super.key});
@@ -28,6 +30,7 @@ class _GeminiPageState extends State<GeminiPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: HealthColors.blue2,
       body: _buildUI(),
     );
   }
@@ -82,10 +85,11 @@ class _GeminiPageState extends State<GeminiPage> {
           String response = event.content?.parts?.fold(
                   "", (previous, current) => "$previous ${current.text}") ??
               "";
+          String normalResponse = convertToPlainText(response);
           ChatMessage message = ChatMessage(
             user: geminiUser,
             createdAt: DateTime.now(),
-            text: response,
+            text: normalResponse,
           );
           setState(() {
             messages = [message, ...messages];
@@ -93,7 +97,7 @@ class _GeminiPageState extends State<GeminiPage> {
         }
       });
     } catch (e) {
-      print(e);
+      throw e.toString();
     }
   }
 
@@ -118,4 +122,14 @@ class _GeminiPageState extends State<GeminiPage> {
       _sendMessage(chatMessage);
     }
   }
+}
+
+String convertToPlainText(String response) {
+  final htmlText = markdownToHtml(response);
+
+  final regex = RegExp(r'<[^>]*>', multiLine: true);
+  final plainText = htmlText.replaceAll(regex, '');
+
+  final trimmedText = plainText.trimLeft().trimRight();
+  return trimmedText;
 }

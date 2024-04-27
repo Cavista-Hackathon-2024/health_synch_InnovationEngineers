@@ -24,10 +24,12 @@ class _AddInfoPageState extends State<AddInfoPage> {
       TextEditingController();
   final TextEditingController _emergencyAddressController =
       TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: HealthColors.blue2,
       appBar: AppBar(
         title: const Text("Additional Information"),
       ),
@@ -97,6 +99,39 @@ class _AddInfoPageState extends State<AddInfoPage> {
                 controller: _genderController,
                 decoration: InputDecoration(
                   hintText: "e.g Male, Female",
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(9),
+                    borderSide: const BorderSide(
+                      color: HealthColors.blue,
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(9),
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            const Text(
+              "Date of birth?",
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: 50,
+              child: TextField(
+                textAlignVertical: TextAlignVertical.bottom,
+                style: const TextStyle(fontSize: 16, color: Colors.black),
+                controller: _ageController,
+                decoration: InputDecoration(
+                  hintText: "e.g dd/mm/yy",
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(9),
                     borderSide: const BorderSide(
@@ -224,6 +259,7 @@ class _AddInfoPageState extends State<AddInfoPage> {
                         _addressController.text.isNotEmpty &&
                         _emergencyAddressController.text.isNotEmpty &&
                         _emergencyNameController.text.isNotEmpty &&
+                        _ageController.text.isNotEmpty &&
                         _emergencyPhoneController.text.isNotEmpty &&
                         _emergencyPhoneController.text
                                 .replaceAll(r' ', "")
@@ -235,6 +271,7 @@ class _AddInfoPageState extends State<AddInfoPage> {
                           .collection("Users")
                           .doc(myUId)
                           .update({
+                        "dob": _ageController.text,
                         "gender": _genderController.text,
                         "address": _addressController.text,
                         "emergencyContact": EmergencyContact(

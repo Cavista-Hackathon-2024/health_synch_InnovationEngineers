@@ -6,6 +6,7 @@ import 'package:health_sync_app/authentication/auth_provider.dart';
 import 'package:health_sync_app/colors.dart';
 import 'package:health_sync_app/const.dart';
 import 'package:health_sync_app/dashboard/dashboard_provider.dart';
+import 'package:health_sync_app/doctor/doc_provider.dart';
 import 'package:health_sync_app/firebase_options.dart';
 import 'package:health_sync_app/splash_screen.dart';
 import 'package:health_sync_app/upload/upload_provider.dart';
@@ -27,6 +28,9 @@ void main() async {
       ),
       ChangeNotifierProvider(
         create: (_) => UploadProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => DocProvider(),
       ),
     ],
     child: const MyApp(),

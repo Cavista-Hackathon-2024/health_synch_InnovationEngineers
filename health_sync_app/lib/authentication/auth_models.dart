@@ -5,14 +5,18 @@ class User {
   String? dob;
   String? gender;
   String? address;
+  bool? isMedic;
+  String accessKey;
   EmergencyContact? emergencyContact;
 
   User({
+    this.isMedic,
     this.address,
     required this.name,
     this.dob,
     this.emergencyContact,
     this.gender,
+    required this.accessKey,
     required this.gmail,
     required this.uId,
   });
@@ -25,6 +29,8 @@ class User {
         "gender": gender,
         "address": address,
         "emergencyContact": emergencyContact,
+        "accessKey": accessKey,
+        "isMedic": isMedic,
       };
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -35,6 +41,8 @@ class User {
         dob: json["dob"],
         emergencyContact: EmergencyContact.fromJson(json["emergencyContact"]),
         gender: json["gender"],
+        accessKey: json["accessKey"],
+        isMedic: json["isMedic"],
       );
 }
 

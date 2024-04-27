@@ -115,6 +115,7 @@ class OnboardingScreen extends StatelessWidget {
           ],
         ),
       ),
+      backgroundColor: HealthColors.blue2,
     );
   }
 }

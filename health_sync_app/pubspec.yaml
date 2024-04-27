@@ -47,6 +47,7 @@ dependencies:
   flutter_gemini: ^2.0.3
   image_picker: ^1.0.8
   intl: ^0.18.1
+  markdown: ^7.2.2
 
 dev_dependencies:
   flutter_test:

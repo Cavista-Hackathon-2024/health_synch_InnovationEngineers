@@ -41,6 +41,7 @@ class _DashScreenState extends State<DashScreen> {
               if (snapshots.hasData == true) {
                 var thisDoc = snapshots.data!.data();
                 document = User(
+                  accessKey: thisDoc["accessKey"],
                   name: thisDoc["name"],
                   gmail: thisDoc["gmail"],
                   uId: thisDoc["uId"],
@@ -84,7 +85,6 @@ class _DashScreenState extends State<DashScreen> {
                                     style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: "Roboto",
                                       color: Colors.white,
                                     ),
                                   ),
@@ -98,7 +98,6 @@ class _DashScreenState extends State<DashScreen> {
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: "Roboto",
                                             color: Colors.white,
                                           ),
                                         ),
@@ -124,6 +123,7 @@ class _DashScreenState extends State<DashScreen> {
           ),
         ),
       ),
+      backgroundColor: HealthColors.blue2,
       body: const TabView(),
     );
   }
@@ -137,7 +137,9 @@ class TabView extends StatelessWidget {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        backgroundColor: HealthColors.blue2,
         appBar: AppBar(
+          backgroundColor: HealthColors.blue2,
           bottom: const TabBar(
             tabs: [
               Tab(text: "Medications"),
