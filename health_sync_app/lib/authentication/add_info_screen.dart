@@ -280,6 +280,22 @@ class _AddInfoPageState extends State<AddInfoPage> {
                           phone: _emergencyPhoneController.text,
                         ).toJson(),
                       });
+                      FirebaseFirestore.instance
+                          .collection("Medication")
+                          .doc(myUId)
+                          .set({"mmm": "mmm"});
+                      FirebaseFirestore.instance
+                          .collection("Allergies")
+                          .doc(myUId)
+                          .set({"mmm": "mmm"});
+                      FirebaseFirestore.instance
+                          .collection("Other")
+                          .doc(myUId)
+                          .set({"mmm": "mmm"});
+                      FirebaseFirestore.instance
+                          .collection("Vitals")
+                          .doc(myUId)
+                          .set({"mmm": "mmm"});
                       await SecureStorage.writeDob(" byft");
                       Navigator.pushAndRemoveUntil(
                           context,

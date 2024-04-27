@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:health_sync_app/authentication/auth_models.dart';
 import 'package:health_sync_app/authentication/auth_provider.dart';
 import 'package:health_sync_app/colors.dart';
@@ -139,6 +140,8 @@ class TabView extends StatelessWidget {
       child: Scaffold(
         backgroundColor: HealthColors.blue2,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Center(child: Text("Health Data")),
           backgroundColor: HealthColors.blue2,
           bottom: const TabBar(
             tabs: [
@@ -152,7 +155,7 @@ class TabView extends StatelessWidget {
         body: const TabBarView(
           children: [
             MedTab(),
-            SizedBox(),
+            Allergies(),
             SizedBox(),
             SizedBox(),
           ],
@@ -220,6 +223,155 @@ class MedTab extends StatelessWidget {
                 List<MapEntry<String, dynamic>> documents = [];
                 documents = snapshot.data!.data()!.entries.toList();
                 return documents.length > 1
+                    ? Scaffold(
+                        floatingActionButton: FloatingActionButton(
+                          backgroundColor: HealthColors.blue,
+                          foregroundColor: Colors.white,
+                          onPressed: () {
+                            String text =
+                                "Hey, here are the current drug intakes: \n-${documents[1].value["name"]} (${documents[1].value["instruction"]})\n-${documents[2].value["name"]} (${documents[2].value["instruction"]}).\nWhat are the known side effects?";
+
+                            Clipboard.setData(ClipboardData(text: text));
+                            // Optional: Show a snackbar to indicate successful copy
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                duration: Duration(milliseconds: 500),
+                                content: Text('Text copied to clipboard!'),
+                              ),
+                            );
+                          },
+                          child: const Icon(Icons.copy),
+                        ),
+                        backgroundColor: Colors.white,
+                        body: ListView.builder(
+                          itemBuilder: (context, index) {
+                            var document = documents[index + 1].value;
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: HealthColors.blue,
+                                child: Text(
+                                  "${index + 1}",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                document["name"],
+                              ),
+                              subtitle: Text(
+                                document["instruction"],
+                              ),
+                              trailing: Text(document["date"]),
+                            );
+                          },
+                          itemCount: documents.length - 1,
+                        ),
+                      )
+                    : Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: GestureDetector(
+                            onTap: () {
+                              Provider.of<DashProvider>(context, listen: false)
+                                  .onTapItem(1);
+                            },
+                            child: Container(
+                              color: HealthColors.blue,
+                              height: MediaQuery.sizeOf(context).height * 0.2,
+                              width: MediaQuery.sizeOf(context).width * 0.6,
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.add_circle,
+                                    size: 50,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                  Text(
+                                    "Add new document",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+              }
+            } else {
+              return const Text("");
+            }
+          }),
+    );
+  }
+}
+
+class Allergies extends StatelessWidget {
+  const Allergies({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AuthProvider>(
+      builder: (context, provider, child) => FutureBuilder(
+          future: FirebaseFirestore.instance
+              .collection("Allergies")
+              .doc(provider.myUId)
+              .get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasData) {
+              if (snapshot.data!.data() == null) {
+                return Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: GestureDetector(
+                      onTap: () {
+                        Provider.of<DashProvider>(context, listen: false)
+                            .onTapItem(1);
+                      },
+                      child: Container(
+                        color: HealthColors.blue,
+                        height: MediaQuery.sizeOf(context).height * 0.2,
+                        width: MediaQuery.sizeOf(context).width * 0.6,
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add_circle,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Text(
+                              "Add new document",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              } else {
+                List<MapEntry<String, dynamic>> documents = [];
+                documents = snapshot.data!.data()!.entries.toList();
+                return documents.length > 1
                     ? ListView.builder(
                         itemBuilder: (context, index) {
                           var document = documents[index + 1].value;
@@ -235,12 +387,11 @@ class MedTab extends StatelessWidget {
                               ),
                             ),
                             title: Text(
-                              document["name"],
+                              document["description"],
                             ),
                             subtitle: Text(
-                              document["instruction"],
+                              document["symptoms"],
                             ),
-                            trailing: Text(document["date"]),
                           );
                         },
                         itemCount: documents.length - 1,
