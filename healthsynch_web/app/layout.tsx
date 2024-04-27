@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Navbar from "/components/navbar/navbar"
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -17,10 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className} className="pb-24 h-screen overflow-hidden">
-      <Navbar />
-      {children}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
