@@ -263,7 +263,7 @@ class _AddInfoPageState extends State<AddInfoPage> {
                 }
               },
               child: const Text(
-                "Continue",
+                "Submit",
                 style: TextStyle(
                   fontSize: 18,
                 ),
