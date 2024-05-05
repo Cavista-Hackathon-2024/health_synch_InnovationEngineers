@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Image1 from '@/public/profile_victory.jpg';
-import Image2 from '@/public/profile_victory.jpg';
-import Image3 from '@/public/profile_victory.jpg';
-import Image4 from '@/public/profile_victory.jpg';
+import Image2 from '@/public/profile_joel.jpg'
+import Image3 from '@/public/profile_david.jpg';
+import Image4 from '@/public/profile_judah.jpg';
 
 const Profile = [
     {
