@@ -129,10 +129,11 @@ class _UploadAllergyState extends State<UploadAllergy> {
                           content: Text("Upload failed"),
                         ));
                       }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Fill all required parameters"),
+                      ));
                     }
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Fill all required parameters"),
-                    ));
                   },
                   style: ButtonStyle(
                     minimumSize: MaterialStatePropertyAll(
@@ -150,6 +151,7 @@ class _UploadAllergyState extends State<UploadAllergy> {
           ),
         ),
       ),
+      backgroundColor: HealthColors.blue2,
     );
   }
 }

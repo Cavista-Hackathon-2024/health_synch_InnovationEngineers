@@ -19,6 +19,7 @@ class _UploadScreenState extends State<UploadScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: HealthColors.blue2,
         title: const Center(
           child: Text("Upload data"),
         ),
@@ -160,6 +161,7 @@ class _UploadScreenState extends State<UploadScreen> {
           ],
         ),
       ),
+      backgroundColor: HealthColors.blue2,
     );
   }
 }
