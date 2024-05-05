@@ -6,12 +6,10 @@ type CardProps = {
 
 export default function CardComponent({ Image, heading, description }: CardProps) {
     return (
-        <div>
-            <div className="bg-white p-4 rounded-lg shadow-lg" style={{ maxWidth: '350px' }}>
+        <div className="bg-white p-4 rounded-lg shadow-lg m-0" style={{ maxWidth: '350px', width: '330px' }}>
                 <div className="text-center">{Image}</div>
                 <h3 className="font-bold text-xl text-blue-500">{heading}</h3>
                 <p>{description}</p>
             </div>
-        </div>
     );
 }

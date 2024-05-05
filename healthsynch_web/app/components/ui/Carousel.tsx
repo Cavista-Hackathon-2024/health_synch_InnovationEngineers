@@ -12,6 +12,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 
+import { ReactNode } from 'react';
+import { Images } from "@/public/icons_images/carousel"
+
 export function CarouselPlugin() {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
@@ -46,15 +49,15 @@ export function CarouselPlugin() {
       opts={{
         align: "start",
       }}
-      className="w-full max-w-sm mx-auto"
+      className="w-full max-w-lg mx-auto"
     >
       <CarouselContent>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-            <div className="p-1">
+      {Images.map((image, index) => (
+          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 " style={{width: '200px'}}>
+            <div>
               <Card>
-                <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <span className="text-3xl font-semibold">{index + 1}</span>
+                <CardContent className="flex items-center justify-center p-0 overflow-hidden">
+                  <span>{image}</span>
                 </CardContent>
               </Card>
             </div>

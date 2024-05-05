@@ -1,4 +1,4 @@
-import Logo from "@/public/icons/logo";
+import Logo from "@/public/icons_images/logo";
 import { Button } from "../ui/button";
 import Link from "next/link"
 
@@ -14,11 +14,11 @@ export default function Navbar() {
           </p>
         </Link>
         <div>
-          <ul className="flex flex-row font-bold">
+          <ul className="flex flex-row font-bold text-center">
             <li className="p-4" style={{ color: '#528be7' }}><a href="#home">Home</a></li>
             <li className="p-4" style={{ color: '#528be7' }}><a href="#about">About Us</a></li>
             <li className="p-4" style={{ color: '#528be7' }}><a href="#features">Features</a></li>
-            <li className="p-4" style={{ color: '#528be7' }}><a href="#contact">Contact</a></li>
+            {/* <li className="p-4" style={{ color: '#528be7' }}><a href="#contact">Contact</a></li> */}
           </ul>
         </div>
         <div>
